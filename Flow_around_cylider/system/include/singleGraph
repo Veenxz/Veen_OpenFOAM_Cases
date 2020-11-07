@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// Sampling and I/O settings
+#includeEtc "caseDicts/postProcessing/graphs/sampleDict.cfg"
+
+// Override settings here, e.g.
+// setConfig { type midPoint; }
+
+type            sets;
+libs            ("libsampling.so");
+
+writeControl    writeTime;
+
+interpolationScheme cellPoint;
+
+setFormat   raw;
+
+setConfig
+{
+    type    lineUniform;   // midPoint, midPointAndFace, lineCell
+    axis    y;  // x, y, z, xyz, distance
+    nPoints 100;
+}
+
+sets
+(
+    line1
+    {
+        $setConfig;
+        start (-0.29250 -0.234 0.01);
+        end   (-0.29250  0.234 0.01);
+    }
+    
+    line2
+    {
+        $setConfig;
+        start (-0.14625 -0.234 0.01);
+        end   (-0.14625  0.234 0.01);
+    }
+);
+
+fields  (U p UMean UPrime2Mean vorticity);
+
+// ************************************************************************* //

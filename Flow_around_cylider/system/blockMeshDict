@@ -1,0 +1,168 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.02925;
+
+nx1             200;                ny1             300;
+nx2             60;                 ny2             100;
+ny3             200;                nz              1;
+
+rto1            0.05;               rto2            20;
+rto3            5;                  rto4            1;
+rto5            ((0.3 0.2 0.5) (0.2 0.3 0.4)  (0.2 0.3 2.5) (0.3 0.2 2));
+
+xmin            -12;                 ymin            -12;
+xmax1           12;                  ymax            12;
+xmax2           40;
+xmin3           -0.7011;            ymin3           -0.7011;
+xmax3           0.7011;             ymax3           0.7011;
+zmin            0;                  zmax            1;
+
+rmin1           -1;                 rmax1           1;
+rmin2           -16.9706;           rmax2           16.9706;
+r0000           0;
+
+
+vertices
+(    
+    ($xmin  $ymin  $zmin)            //0
+    ($xmax1 $ymin  $zmin)            //1
+    ($xmax2 $ymin  $zmin)            //2
+    ($xmin3 $ymin3 $zmin)            //3
+    ($xmax3 $ymin3 $zmin)            //4
+    ($xmin3 $ymax3 $zmin)            //5
+    ($xmax3 $ymax3 $zmin)            //6
+    ($xmin  $ymax  $zmin)            //7
+    ($xmax1 $ymax  $zmin)            //8
+    ($xmax2 $ymax  $zmin)            //9
+    
+    
+    ($xmin  $ymin  $zmax)            //10
+    ($xmax1 $ymin  $zmax)            //11
+    ($xmax2 $ymin  $zmax)            //12
+    ($xmin3 $ymin3 $zmax)            //13
+    ($xmax3 $ymin3 $zmax)            //14
+    ($xmin3 $ymax3 $zmax)            //15
+    ($xmax3 $ymax3 $zmax)            //16
+    ($xmin  $ymax  $zmax)            //17
+    ($xmax1 $ymax  $zmax)            //18
+    ($xmax2 $ymax  $zmax)            //19
+    
+);
+
+blocks
+(
+    hex (0 3 5 7 10 13 15 17) ($nx1 $ny1 $nz) simpleGrading ($rto1 $rto5 $rto4)
+    hex (1 4 3 0 11 14 13 10) ($nx1 $ny2 $nz) simpleGrading ($rto1 $rto4 $rto4)
+    hex (4 1 8 6 14 11 18 16) ($nx1 $ny3 $nz) simpleGrading ($rto2 $rto5 $rto4)    
+    hex (6 8 7 5 16 18 17 15) ($nx1 $ny2 $nz) simpleGrading ($rto2 $rto4 $rto4)
+    hex (1 2 9 8 11 12 19 18) ($nx2 $ny3 $nz) simpleGrading ($rto3 $rto5 $rto4)
+);
+
+edges
+(
+   arc 3  5  ($rmin1 $r0000 $zmin)
+   arc 13 15 ($rmin1 $r0000 $zmax)
+   arc 4  6  ($rmax1 $r0000 $zmin)
+   arc 14 16 ($rmax1 $r0000 $zmax)
+   arc 5  6  ($r0000 $rmax1 $zmin)
+   arc 15 16 ($r0000 $rmax1 $zmax)
+   arc 3  4  ($r0000 $rmin1 $zmin)
+   arc 13 14 ($r0000 $rmin1 $zmax)
+   arc 0  7  ($rmin2 $r0000 $zmin)
+   arc 10 17 ($rmin2 $r0000 $zmax)
+   
+   /*
+   arc 7  8  ($r0000 $rmax2 $zmin)
+   arc 17 18 ($r0000 $rmax2 $zmax)
+   arc 8  1  ($rmax2 $r0000 $zmin)
+   arc 18 11 ($rmax2 $r0000 $zmax)
+   arc 0  1  ($r0000 $rmin2 $zmin)
+   arc 10 11 ($r0000 $rmin2 $zmax)
+   */
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (17 7 0 10)
+        );
+    }
+    
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (9 19 12 2)
+        );
+    }
+    
+    walls
+    {
+        type wall;
+        faces
+        (
+            (8 7 17 18)
+            (9 8 18 19)
+            (0 1 11 10)
+            (1 2 12 11)
+        );
+    }
+    
+    cylinder
+    {
+        type wall;
+        faces
+        (
+            (5 6 16 15)
+            (16 6 4 14)
+            (4 3 13 14)
+            (3 5 15 13)
+        );
+    }
+    
+    frontAndBack
+    {
+        type empty;
+        faces
+        (
+            (7 8 6 5)
+            (7 5 3 0)
+            (3 4 1 0)
+            (8 1 4 6)
+            (8 9 2 1)
+            
+            (18 17 15 16)
+            (15 17 10 13)
+            (14 13 10 11)
+            (18 16 14 11)
+            (19 18 11 12)
+        );
+    }
+    
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
+

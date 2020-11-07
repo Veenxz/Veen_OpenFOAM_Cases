@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#------------------------------------------------------------------------------
+# title           : slove case
+# description     : slove case
+# author          : Veen Zhou
+# date            : 2020/07/19
+# version         : 0.0.1
+# usage           : ./Newrun
+# bash_version    : 5.0.17(1)-release (x86_64-pc-linux-gnu)
+# OpenFOAM_version: 7
+#------------------------------------------------------------------------------
+
+foamCleanTutorials
+
+blockMesh
+
+renumberMesh -overwrite
+
+decomposePar
+
+mpirun -n 4 pimpleFoam -parallel | tee log.slove
+
+# reconstructPar -time '20,40,60,80,100,120,140,160,180,200'
+
+# postProcess -func "include/singleGraph"
+
+# postProcess -func "Q"
+
+# postProcess -func "vorticity"
+
+
+#------------------------------------------------------------------------------
