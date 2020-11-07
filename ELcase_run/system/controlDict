@@ -1,0 +1,115 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     DPMFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         0.1;
+
+deltaT          1e-05;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.002;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression compressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+functions
+{
+    #includeFunc residuals
+    
+    
+    probes
+    {
+        type            probes;
+        //CourantNo Lambda2 MachNo PecletNo Q fieldAverage fieldMinMax turbulenceIntensity yPlus
+        //probes residuals streamFunction streamLine surfaces time turbulenceFields vorticity
+        libs            ("libfieldFunctionObjects.so");
+        enabled         true;
+        writeControl    timeStep;
+        writeInterval   1;
+        
+        probeLocations
+        (
+            (0  0  20e-3)
+        );
+	
+        fields
+        (
+            U.air p
+        );
+    }
+    
+    outletFlowRate1
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        
+        log             yes;
+        writeFields     no;
+        regionType      patch;
+        name            outlet1;
+        operation       areaIntegrate;
+
+        writeControl    timeStep;
+        writeInterval   1;
+    
+        fields
+        (
+            phi.air
+        );
+    }
+    
+    outletFlowRate2
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        
+        log             yes;
+        writeFields     no;
+        regionType      patch;
+        name            outlet2;
+        operation       areaIntegrate;
+
+        writeControl    timeStep;
+        writeInterval   1;
+    
+        fields
+        (
+            phi.air
+        );
+    }
+}
+
+// ************************************************************************* //

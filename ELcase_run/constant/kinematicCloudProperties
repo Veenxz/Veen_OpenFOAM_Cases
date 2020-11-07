@@ -1,0 +1,161 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      kinematicCloudProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solution
+{
+    active          true;    // Activate/de-activate the particle cloud
+    coupled         false;    // Enable/disable phase coupling
+    transient       yes;     // Transient/steady-state solution
+    maxCo           0.3;
+    cellValueSourceCorrection off;    // Enable/disable correction of 
+                                      // momentum transferred to the Eulerian phase
+
+    interpolationSchemes    // Interpolation schemes for the Lagrangian Particle Tracking
+    {
+        rho.air             cell;
+        U.air               cellPoint;
+        mu.air              cell;
+        alpha.air           cell;
+    }
+
+    integrationSchemes    // time integration scheme
+    {
+        U               Euler;
+    }
+
+    sourceTerms
+    {
+        schemes
+        {
+            U semiImplicit 1;
+        }
+    }
+    
+    averagingMethod dual;
+}
+
+constantProperties    // Define the physical particle properties
+{
+    parcelTypeId 1;
+
+    rho0            2050;     // particle density (kg/m3)
+    youngsModulus   6e8;      // constant of proportionality relating the deformation
+                              // to the applied stress for your particles (N/m2)
+    poissonsRatio   0.3;      // ratio of traverse to axial strain for particles (dimensionless)
+
+    constantVolume  false;
+
+    alphaMax        0.99;     //MPPCIFoam needs only rho0 and alphaMax
+}
+
+subModels
+{
+    particleForces
+    {
+        SchillerNaumannDrag   
+        {
+            alphac alpha.air;
+        }
+        gravity;
+    }
+
+    injectionModels
+    {
+        model1
+        {            
+            type                  patchInjection;    //patchFlowRateInjection;
+            patchName             inlet;
+            massTotal             0.00329;          // total mass to be injected (kg)
+            U0                    (0 0 1);           // Initial parcel/particle velocity
+            
+            parcelBasisType       fixed;             // options of how to represent particles
+            duration              3.0;               // particle injection time
+            
+            nParticle             1;                 // Number of particles per parcel
+            
+            SOI                   0.005;              // start of injection (time)
+            parcelsPerSecond      20000;             // parcels per second
+            flowRateProfile constant 1;
+            
+            sizeDistribution
+            {
+                type        fixedValue;    // normal distribution
+                fixedValueDistribution
+                {
+                    value   8e-6;
+                }
+            }
+        }	
+    }
+
+    //dispersionModel gradientDispersionRAS;
+    dispersionModel none;
+
+    patchInteractionModel localInteraction;
+
+    localInteractionCoeffs    // patch interaction definition
+    {
+        patches
+        (
+            outlet1
+            {
+                type escape;    //rebound stick or escape
+            }
+            outlet2
+            {
+                type escape;    //rebound stick or escape
+            }
+            inlet
+            {
+                type escape;
+            }
+            wall
+            {
+                type stick;
+            }
+        );
+    }
+
+    StandardWallInteractionCoeffs
+    {
+        type stick;
+        e    0.09;
+        mu   0.97;
+    }
+
+    heatTransferModel none;
+
+    surfaceFilmModel none;
+
+    collisionModel none;
+    
+    stochasticCollisionModel none;
+
+    radiation off;
+}
+
+
+cloudFunctions
+{
+    voidFraction1
+    {
+        type voidFraction;
+    }
+}
+
+
+// ************************************************************************* //

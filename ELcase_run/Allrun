@@ -1,0 +1,30 @@
+#!/bin/bash
+
+rm -rf processpr*
+rm -rf post*
+
+cd steady/
+
+foamCleanTutorials
+
+fluent3DMeshToFoam mesh/6W.msh
+
+renumberMesh -overwrite
+
+decomposePar
+
+mpirun -np 4 simpleFoam -parallel | tee log.slove
+
+reconstructPar -latestTime
+
+cd ..
+
+cp -r steady/4/p 0/p
+cp -r steady/4/U 0/U.air
+cp -r steady/constant/polyMesh constant/polyMesh
+
+decomposePar
+
+mpirun -np 4 DPMFoam -parallel | tee log.slove
+
+reconstructPar
