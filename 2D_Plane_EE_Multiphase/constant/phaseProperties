@@ -1,0 +1,127 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+phases (particles air);
+
+particles
+{
+    residualAlpha   1e-6;
+
+    diameterModel constant;
+    constantCoeffs
+    {
+        d               5e-4;
+    }
+
+    alphaMax        0.62;
+    residualAlpha   1e-6;
+}
+
+air
+{
+    residualAlpha   0;
+
+    diameterModel constant;
+    constantCoeffs
+    {
+        d               1;
+    }
+
+    residualAlpha   1e-5;
+}
+
+blending
+{
+    default
+    {
+        type            none;
+        residualAlpha   1e-6;
+        continuousPhase air;
+    }
+}
+
+surfaceTension
+(
+    (air and particles)
+    {
+        type            constant;
+        sigma           0;
+    }
+);
+
+sigma
+(
+    (particles and air) 0
+);
+
+
+aspectRatio
+(
+);
+
+drag
+(
+    (particles in air)
+    {
+        type            EMMS;
+        residualAlpha   1e-5;
+        residualRe      1e-5;
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+);
+
+virtualMass
+(
+    (particles in air)
+    {
+        type            constantCoefficient;
+        Cvm             0;
+    }
+);
+
+heatTransfer
+(
+    (particles in air)
+    {
+        type            RanzMarshall;
+        residualAlpha   1e-4;
+    }
+);
+
+phaseTransfer
+();
+
+lift
+();
+
+wallLubrication
+();
+
+turbulentDispersion
+();
+
+interfaceCompression
+();
+
+// Minimum allowable pressure
+pMin            10000;
+
+
+// ************************************************************************* //
