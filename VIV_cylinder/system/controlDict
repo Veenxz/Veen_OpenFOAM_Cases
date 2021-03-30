@@ -53,8 +53,6 @@ maxDeltaT       1;
 
 functions
 {
-//    #include "streamLines"
-//    #include "cuttingPlane"
     #include "forceCoeffs"
     
     #includeFunc fieldAverage(U, p, prime2Mean = yes)

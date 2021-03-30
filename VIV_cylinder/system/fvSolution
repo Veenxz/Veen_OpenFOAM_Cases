@@ -95,12 +95,13 @@ relaxationFactors
 {
     fields
     {
-        p               0.5;
+        p               0.4;
+        pFinal          1.0;
     }
     
     equations
     {
-        "(U|k|omega)"   0.7;
+        "(U|k|omega)"   0.6;
         "(U|k|omega)Final" 1.0;
     }
 }

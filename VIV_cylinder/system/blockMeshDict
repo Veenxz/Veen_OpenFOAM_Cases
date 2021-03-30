@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-convertToMeters 0.1	;
+convertToMeters 0.1;
 
 xmin      -60;            xmax      150;
 rmin      -5;             rmax      5;
@@ -135,7 +135,7 @@ blocks
     hex (23 11 21 22 55 43 53 54) ($nx1 $nx2 $nz0) simpleGrading ($rix $r0y $rz0) //Block 12    inlet
     hex (24 12 11 23 56 44 43 55) ($nx1 $ncx $nz0) simpleGrading ($rix $riy $rz0) //Block 13    inlet
     hex (25 13 12 24 57 45 44 56) ($nx1 $ncx $nz0) simpleGrading ($rix $riy $rz0) //Block 14    inlet
-    hex (26 27 13 25 58 59 45 57) ($nx1 $nx2 $nz0) simpleGrading ($rix $r1y $rz0) //Block 15  inlet
+    hex (26 27 13 25 58 59 45 57) ($nx1 $nx2 $nz0) simpleGrading ($rix $r1y $rz0) //Block 15    inlet
     hex (27 28 14 13 59 60 46 45) ($ncx $nx2 $nz0) simpleGrading ($r0x $r1y $rz0) //Block 16
     hex (28 29 15 14 60 61 47 46) ($ncx $nx2 $nz0) simpleGrading ($r0x $r1y $rz0) //Block 17
     hex (29 30 31 15 61 62 63 47) ($nx2 $nx2 $nz0) simpleGrading ($rox $r1y $rz0) //Block 18    outlet

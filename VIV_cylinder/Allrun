@@ -9,6 +9,7 @@ decomposePar
 mpirun -np 4 renumberMesh -overwrite                                     
 mpirun -np 4 pimpleFoam -parallel | tee log.pimpleFoam
 
+# clean sixDoF data
 file='postProcessing/sixDoFRigidBodyState/0/sixDoFRigidBodyState.dat'
 cp ${file} clean.dat
 file='clean.dat'

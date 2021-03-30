@@ -1,2 +1,9 @@
-inlet 1m/s
+This case is for Vortex-induced vibration around cylinder, using pimpleFoam in OpenFOAM.
+For weak FSI only.
 
+inlet    1 m/s
+D        1 m
+nu       0.002 m2/s
+Re       500
+
+If you want to run txy.py, make sure you have installed pandas numpy matplotlib.
