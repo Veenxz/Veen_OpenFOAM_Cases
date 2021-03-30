@@ -1,0 +1,121 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh   dynamicMotionSolverFvMesh;
+
+motionSolverLibs    ("libsixDoFRigidBodyMotion.so");
+
+motionSolver        sixDoFRigidBodyMotion;
+
+sixDoFRigidBodyMotionCoeffs
+{
+    report          on;
+    
+    patches         (cylinder);
+    innerDistance   2;      // Extent of the solid-body motion region around body
+    outerDistance   15;       // Extent of mesh-morphing region around body
+
+    // Gravity acceleration
+    g               (0 0 -9.81);
+    
+    // Density of fluid
+    rho             rhoInf;
+    rhoInf          1;
+
+    // Cylinder mass
+    mass            1;
+
+    // Cylinder centre of mass
+    centreOfMass (0.0 0.0 0.0);
+    
+    // Cylinder moment of inertia about the centre of mass
+    momentOfInertia (1e-5 1e-5 1e-5);
+    
+    orientation
+    (
+    1 0 0
+    0 1 0
+    0 0 1
+    );
+
+    accelerationRelaxation 0.9;
+    //accelerationDamping 1.0;
+    value           uniform (0 0 0);
+
+    solver
+    {
+        type Newmark;
+    }
+
+    constraints
+    {
+        maxIterations      500;
+        /*
+        xLine
+        {
+            sixDoFRigidBodyMotionConstraint line;
+            tolerance        1e-9;
+            relaxationFactor 0.7;
+            refPoint      (0 0 0);
+            direction     (1 0 0);
+        }
+        zLine
+        {
+            sixDoFRigidBodyMotionConstraint line;
+            tolerance        1e-9;
+            relaxationFactor 0.6;
+            refPoint      (0 0 0);
+            direction     (0 0 1);
+        }*/
+        
+        fixedOrientation
+        {
+            sixDoFRigidBodyMotionConstraint orientation;
+            centreOfRotation                (0 0 0);
+        }
+        
+        
+        zAxis
+        {
+            sixDoFRigidBodyMotionConstraint axis;
+            axis          (0 0 1);
+        }
+        
+        zPlane
+        {
+            sixDoFRigidBodyMotionConstraint plane;
+            refPoint      (0 0 0);
+            normal        (0 0 1);
+        }/**/
+    }
+
+    restraints
+    {
+        verticalSpring    // modelling of the translation as mass-spring-damping system
+        {
+            sixDoFRigidBodyMotionRestraint linearSpring;
+
+            anchor          (0.0 0.0 0);
+            refAttachmentPt (0.0 0.0 0);
+            stiffness       20;       //units of N/m
+            damping         0;       //units of Ns/m
+            restLength      0;
+        }
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,55 @@
+reset
+
+set terminal qt
+
+Filein='postProcessing/forceCoeffs1/0/forceCoeffs.dat'
+#Filein='postProcessing/forceCoeffs1/0/forceCoeffs_new.dat'
+
+# time 1  cd  3  cl 4
+
+set terminal qt
+
+set grid xtics
+set grid ytics
+
+set key right
+set key Left
+set key reverse
+set key box
+set key width 1
+set key spacing 1.2
+set key samplen 3
+
+set xlabel "Time (s)"
+
+set ylabel "ForceCoffes"
+
+stats Filein u 1 prefix "T"
+
+stats Filein u 3 prefix "Cd"
+
+stats Filein u 4 prefix "Cl"
+
+# set object 1 rectangle from 0.9,-2.2 to 3,-0.8 lw 1
+
+
+
+# set xrange [0.1:T_max+2]
+set yrange [-2.5:4]
+
+plot Filein u 1:3 w l linewidth"1.5" title"Cd", Filein u 1:4 w l linewidth"1.5" title"Cl", Cd_mean dt 2 linewidth"1.5" title "Cd Mean" , Cl_mean dt 2 linewidth"1.5" title "Cl Mean"
+
+set label 1 gprintf("Cd Minimum = %.4f", Cd_min) at 1+T_min, -1.4 left textcolor rgbcolor "blue"
+set label 2 gprintf("Cd Maximum = %.4f", Cd_max) at 1+T_min, -1.6 left textcolor rgbcolor "green"
+set label 3 gprintf("Cd Mean = %.4f", Cd_mean) at 1+T_min, -1.8 left textcolor rgbcolor "red"
+set label 4 gprintf("Cl Minimum = %.4f", Cl_min) at 1+T_min, -2.0 left textcolor rgbcolor "blue"
+set label 5 gprintf("Cl Maximum = %.4f", Cl_max) at 1+T_min, -2.2 left textcolor rgbcolor "green"
+set label 6 gprintf("Cl Mean = %.4f", Cl_mean) at 1+T_min, -2.4 left textcolor rgbcolor "red"
+
+print "Plotting with GNUPLOT"
+print "Press ENTER or crtl-c to close windows and take control of the terminal"
+
+pause -1
+
+
+

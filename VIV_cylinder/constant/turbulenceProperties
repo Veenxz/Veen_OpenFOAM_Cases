@@ -1,0 +1,131 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//simulationType  laminar;
+
+/*
+simulationType  RAS;
+
+RAS
+{
+    RASModel        realizableKE;
+    
+    // Optional
+    // RASModel        kEpsilon;
+    // RASModel        RNGkEpsilon;
+    // RASModel        realizableKE;
+    // RASModel        kOmega;
+    // RASModel        kOmegaSST;
+
+    turbulence      on;
+
+    printCoeffs     on;
+}
+*/
+
+
+simulationType LES;
+
+LES
+{
+    LESModel        WALE;
+    
+    // Optional
+    // LESModel        kEqn;
+    // LESModel        dynamicKEqn;
+    // LESModel        Smagorinsky;
+
+    turbulence      on;
+
+    printCoeffs     on;
+
+    delta           cubeRootVol;
+    //delta           vanDriest;
+
+    cubeRootVolCoeffs
+    {
+        deltaCoeff      1;
+    }
+    
+    
+    PrandtlCoeffs     //improve near-wall behavior 
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+
+        smoothCoeffs
+        {
+            delta           cubeRootVol;
+            cubeRootVolCoeffs
+            {
+                deltaCoeff      1;
+            }
+
+            maxDeltaRatio   1.1;
+        }
+
+        // Default coefficients
+        kappa           0.41;
+        Cdelta          0.158;
+    }
+
+    vanDriestCoeffs    // near wall process  Y+ 500
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+
+        smoothCoeffs
+        {
+            delta           cubeRootVol;
+            cubeRootVolCoeffs
+            {
+                deltaCoeff      1;
+            }
+
+            maxDeltaRatio   1.1;
+        }
+
+        // Optional entries
+        kappa           0.41;
+        Aplus           26;
+        Cdelta          0.158;
+        calcInterval    1;
+    }
+
+    smoothCoeffs
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+
+        maxDeltaRatio   1.1;
+    }
+    
+}
+
+
+
+
+
+// ************************************************************************* //

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+foamCleanTutorials
+
+blockMesh
+
+decomposePar
+
+mpirun -np 4 renumberMesh -overwrite                                     
+mpirun -np 4 pimpleFoam -parallel | tee log.pimpleFoam
+
+file='postProcessing/sixDoFRigidBodyState/0/sixDoFRigidBodyState.dat'
+cp ${file} clean.dat
+file='clean.dat'
+
+sed -i "s/(//g" ${file}
+sed -i "s/)//g" ${file}
+sed -i '/#/'d ${file}

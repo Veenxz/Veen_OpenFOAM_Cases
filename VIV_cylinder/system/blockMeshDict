@@ -1,0 +1,333 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.1	;
+
+xmin      -60;            xmax      150;
+rmin      -5;             rmax      5;
+rc00      -3.535533906;   rc11      3.535533906;
+cir1      -15;            cir2      15;
+cc00      -10.60660172;   cc11      10.60660172;
+ymin      -50;            ymax      50;
+zmin      -5;             zmax      5;
+zero       0;
+
+ncx        15;            ncy       40;
+nx1        40;            nx2       60;
+nx3        60;            nz0        1;
+
+rcx        1;             rcy        4;
+rix        0.25;          riy        1;
+rox        8;             roy        1;
+r0x        1;             r0y        2;
+rz0        1;             r1y        0.5;
+
+
+vertices
+(
+//z=0
+//inner circle
+   ($rmax $zero $zmin) //0
+   ($rc11 $rc11 $zmin) //1
+   ($zero $rmax $zmin) //2
+   ($rc00 $rc11 $zmin) //3
+   ($rmin $zero $zmin) //4
+   ($rc00 $rc00 $zmin) //5
+   ($zero $rmin $zmin) //6
+   ($rc11 $rc00 $zmin) //7
+
+//outer circle
+   ($cir2 $zero $zmin) //8
+   ($cc11 $cc11 $zmin) //9
+   ($zero $cir2 $zmin) //10
+   ($cc00 $cc11 $zmin) //11
+   ($cir1 $zero $zmin) //12
+   ($cc00 $cc00 $zmin) //13
+   ($zero $cir1 $zmin) //14
+   ($cc11 $cc00 $zmin) //15
+
+//rectangle
+   ($xmax $zero $zmin) //16
+   ($xmax $cc11 $zmin) //17
+   ($xmax $ymax $zmin) //18
+   ($cc11 $ymax $zmin) //19
+   ($zero $ymax $zmin) //20
+   ($cc00 $ymax $zmin) //21
+   ($xmin $ymax $zmin) //22
+   ($xmin $cc11 $zmin) //23
+   ($xmin $zero $zmin) //24
+   ($xmin $cc00 $zmin) //25
+   ($xmin $ymin $zmin) //26
+   ($cc00 $ymin $zmin) //27
+   ($zero $ymin $zmin) //28
+   ($cc11 $ymin $zmin) //29
+   ($xmax $ymin $zmin) //30
+   ($xmax $cc00 $zmin) //31
+
+
+//z=1
+//inner circle
+   ($rmax $zero $zmax) //32
+   ($rc11 $rc11 $zmax) //33
+   ($zero $rmax $zmax) //34
+   ($rc00 $rc11 $zmax) //35
+   ($rmin $zero $zmax) //36
+   ($rc00 $rc00 $zmax) //37
+   ($zero $rmin $zmax) //38
+   ($rc11 $rc00 $zmax) //39
+
+//outer circle
+   ($cir2 $zero $zmax) //40
+   ($cc11 $cc11 $zmax) //41
+   ($zero $cir2 $zmax) //42
+   ($cc00 $cc11 $zmax) //43
+   ($cir1 $zero $zmax) //44
+   ($cc00 $cc00 $zmax) //45
+   ($zero $cir1 $zmax) //46
+   ($cc11 $cc00 $zmax) //47
+
+//rectangle
+   ($xmax $zero $zmax) //48
+   ($xmax $cc11 $zmax) //49
+   ($xmax $ymax $zmax) //50
+   ($cc11 $ymax $zmax) //51
+   ($zero $ymax $zmax) //52
+   ($cc00 $ymax $zmax) //53
+   ($xmin $ymax $zmax) //54
+   ($xmin $cc11 $zmax) //55
+   ($xmin $zero $zmax) //56
+   ($xmin $cc00 $zmax) //57
+   ($xmin $ymin $zmax) //58
+   ($cc00 $ymin $zmax) //59
+   ($zero $ymin $zmax) //60
+   ($cc11 $ymin $zmax) //61
+   ($xmax $ymin $zmax) //62
+   ($xmax $cc00 $zmax) //63
+);
+
+blocks
+(
+    hex ( 1  0  8  9 33 32 40 41) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 0    cy
+    hex ( 2  1  9 10 34 33 41 42) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 1    cy 
+    hex ( 3  2 10 11 35 34 42 43) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 2    cy
+    hex ( 4  3 11 12 36 35 43 44) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 3    cy
+    hex ( 5  4 12 13 37 36 44 45) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 4    cy
+    hex ( 6  5 13 14 38 37 45 46) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 5    cy
+    hex ( 7  6 14 15 39 38 46 47) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 6    cy
+    hex ( 0  7 15  8 32 39 47 40) ($ncx $ncy $nz0) simpleGrading ($rcx $rcy $rz0) //Block 7    cy
+    hex ( 8 16 17  9 40 48 49 41) ($nx3 $ncx $nz0) simpleGrading ($rox $roy $rz0) //Block 8    outlet
+    hex ( 9 17 18 19 41 49 50 51) ($nx3 $nx3 $nz0) simpleGrading ($rox $r0y $rz0) //Block 9    outlet
+    hex (10  9 19 20 42 41 51 52) ($ncx $nx3 $nz0) simpleGrading ($r0x $r0y $rz0) //Block 10   upper
+    hex (11 10 20 21 43 42 52 53) ($ncx $nx3 $nz0) simpleGrading ($r0x $r0y $rz0) //Block 11   upper
+    hex (23 11 21 22 55 43 53 54) ($nx1 $nx2 $nz0) simpleGrading ($rix $r0y $rz0) //Block 12    inlet
+    hex (24 12 11 23 56 44 43 55) ($nx1 $ncx $nz0) simpleGrading ($rix $riy $rz0) //Block 13    inlet
+    hex (25 13 12 24 57 45 44 56) ($nx1 $ncx $nz0) simpleGrading ($rix $riy $rz0) //Block 14    inlet
+    hex (26 27 13 25 58 59 45 57) ($nx1 $nx2 $nz0) simpleGrading ($rix $r1y $rz0) //Block 15  inlet
+    hex (27 28 14 13 59 60 46 45) ($ncx $nx2 $nz0) simpleGrading ($r0x $r1y $rz0) //Block 16
+    hex (28 29 15 14 60 61 47 46) ($ncx $nx2 $nz0) simpleGrading ($r0x $r1y $rz0) //Block 17
+    hex (29 30 31 15 61 62 63 47) ($nx2 $nx2 $nz0) simpleGrading ($rox $r1y $rz0) //Block 18    outlet
+    hex (15 31 16  8 47 63 48 40) ($nx2 $ncx $nz0) simpleGrading ($rox $roy $rz0) //Block 19    outlet
+);
+
+edges
+(
+    //inner cylinder surface
+    arc 0  1  (4 3 $zmin) 
+    arc 32 33 (4 3 $zmax) 
+
+    arc 1  2  (3 4 $zmin) 
+    arc 33 34 (3 4 $zmax) 
+
+    arc 2  3  (-3 4 $zmin) 
+    arc 34 35 (-3 4 $zmax) 
+
+    arc 3  4  (-4 3 $zmin) 
+    arc 35 36 (-4 3 $zmax)
+
+    arc 4 5 (-4 -3 $zmin)
+    arc 36 37 (-4 -3 $zmax)
+
+    arc 5 6 (-3 -4 $zmin)
+    arc 37 38 (-3 -4 $zmax)
+
+    arc 6 7  (3 -4 $zmin) 
+    arc 38 39 (3 -4 $zmax) 
+
+    arc 7 0  (4 -3 $zmin) 
+    arc 39 32 (4 -3 $zmax)
+
+    //outer cylinder surface
+    arc 8  9  (12 9 $zmin) 
+    arc 40 41 (12 9 $zmax) 
+
+    arc 9 10  (9 12 $zmin) 
+    arc 41 42 (9 12 $zmax) 
+
+    arc 10 11  (-9 12 $zmin) 
+    arc 42 43 (-9 12 $zmax) 
+
+    arc 11 12  (-12 9 $zmin) 
+    arc 43 44 (-12 9 $zmax)
+
+    arc 12 13 (-12 -9 $zmin)
+    arc 44 45 (-12 -9 $zmax)
+
+    arc 13 14 (-9 -12 $zmin)
+    arc 45 46 (-9 -12 $zmax)
+
+    arc 14 15  (9 -12 $zmin) 
+    arc 46 47 (9 -12 $zmax) 
+
+    arc 15 8  (12 -9 $zmin) 
+    arc 47 40 (12 -9 $zmax)
+
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+          (22 23 55 54)
+          (23 24 56 55)
+          (24 25 57 56)
+          (25 26 58 57)
+        );
+    }
+
+    outlet
+    {
+        type patch;
+        faces
+        (
+          (30 31 63 62)
+          (31 16 48 63)
+          (16 17 49 48)
+          (17 18 50 49)
+        );
+    }
+   
+    topAndBottom
+    {
+        type patch;
+        faces
+        (
+          (18 19 51 50)
+          (19 20 52 51)
+          (20 21 53 52)
+          (21 22 54 53)
+
+          (26 27 59 58)
+          (27 28 60 59)
+          (28 29 61 60)
+          (29 30 62 61)
+        ); 
+    }
+    
+
+    cylinder
+    {
+        type wall;
+        faces
+        (
+          (1 0 32 33)
+          (2 1 33 34)
+          (3 2 34 35)
+          (4 3 35 36)
+          (5 4 36 37)
+          (6 5 37 38)
+          (7 6 38 39)
+          (0 7 39 32)
+        );
+    }
+
+    frontAndBack
+    {
+        type empty;
+        faces
+        (
+//circular faces
+          (0 1 9 8)
+          (32 40 41 33)
+
+          (1 2 10 9)
+          (33 41 42 34)
+
+          (2 3 11 10)
+          (34 42 43 35)
+
+          (3 4 12 11)
+          (35 43 44 36)
+
+          (4 5 13 12)
+          (36 44 45 37)
+
+          (5 6 14 13)
+          (37 45 46 38)
+
+          (6 7 15 14)
+          (38 46 47 39)
+
+          (7 0 8 15)
+          (39 47 40 32)
+
+//rectangular faces
+          (8 9 17 16)
+          (40 48 49 41)
+
+          (9 19 18 17)
+          (41 49 50 51)
+
+          (9 10 20 19)
+          (41 51 52 42)
+
+          (10 11 21 20)
+          (42 52 53 43)
+
+          (11 23 22 21)
+          (43 53 54 55)
+
+          (11 12 24 23)
+          (43 55 56 44)
+
+          (12 13 25 24)
+          (44 56 57 45)
+
+          (13 27 26 25)
+          (45 57 58 59)
+
+          (13 14 28 27)
+          (45 59 60 46)
+
+          (14 15 29 28)
+          (46 60 61 47)
+
+          (15 31 30 29)
+          (47 61 62 63)
+
+          (15 8 16 31)
+          (47 63 48 40)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
