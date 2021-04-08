@@ -1,0 +1,26 @@
+#!/bin/bash
+
+foamCleanTutorials
+
+rm -rf 0
+cp -r 0_org 0
+
+blockMesh
+
+renumberMesh -overwrite
+
+surfaceFeatures
+
+snappyHexMesh -overwrite | tee log.snappyHexMesh
+
+topoSet
+
+decomposePar
+
+mpirun -np 4 renumberMesh -overwrite -parallel
+
+mpirun -np 4 potentialFoam -parallel
+
+mpirun -np 4 porousSimpleFoam -parallel | tee log.porousSimpleFoam
+
+#------------------------------------------------------------------------------

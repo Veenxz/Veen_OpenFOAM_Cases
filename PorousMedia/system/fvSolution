@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver          GAMG;
+        tolerance       1e-06;
+        relTol          0.001;
+        smoother        GaussSeidel;
+    }
+
+    pFinal
+    {
+        $p;
+        tolerance       1e-06;
+        relTol          0;
+    }
+    
+    "(U|k|epsilon)"
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        tolerance       1e-06;
+        relTol          0.001;
+    }
+
+    "(U|k|epsilon)Final"
+    {
+        $U;
+        tolerance       1e-06;
+        relTol          0;
+    }
+}
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors 0;
+    nUCorrectors             2;
+    consistent               true;    //SIMPLEC
+    residualControl
+    {
+        p                    1e-8;
+        U                    1e-8;
+        "(k|epsilon)"        1e-8;
+    }
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p               0.3;
+    }
+    equations
+    {
+        U               0.7;
+        k               0.9;
+        epsilon         0.9;
+    }
+}
+
+PISO
+{
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 0;
+    pRefCell        0;
+    pRefValue       0;
+}
+
+// ************************************************************************* //

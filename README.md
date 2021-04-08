@@ -8,6 +8,7 @@
 - Euler-Euler multiphase case
 - Euler-Lagrangian multiphase case
 - Weak FSI using pimpleFoam
+- Flow through porous media using porousSimpleFoam
 - and so on ...
 
 ## Case description
@@ -21,6 +22,7 @@
 ├── 2D_Plane_simpleFoam
 ├── Airway_EL_run
 ├── Flow_around_cylider
+├── PorousMedia
 ├── VIV_cylider
 ├── LICENSE
 └── README.md
@@ -348,5 +350,48 @@ This case is for Vortex-induced vibration around cylinder, using pimpleFoam in O
 │   ├── fvSchemes
 │   └── fvSolution
 └── txy.py
+```
+
+
+
+> #### PorousMedia
+
+```bash
+.
+├── 0_org
+│   ├── U
+│   ├── epsilon
+│   ├── k
+│   ├── nuTilda
+│   ├── nut
+│   ├── omega
+│   └── p
+├── Allrun
+├── boxmesh.py
+├── constant
+│   ├── extendedFeatureEdgeMesh
+│   │   └── fluid.extendedFeatureEdgeMesh
+│   ├── include
+│   │   └── turbulenceModels
+│   ├── porosityProperties
+│   ├── transportProperties
+│   ├── triSurface
+│   │   ├── fluid.eMesh
+│   │   └── fluid.stl
+│   └── turbulenceProperties
+├── gen_topoSet.py
+├── new_post.py
+└── system
+    ├── blockMeshDict
+    ├── controlDict
+    ├── decomposeParDict
+    ├── fieldAverage
+    ├── fvSchemes
+    ├── fvSolution
+    ├── probes
+    ├── residuals
+    ├── snappyHexMeshDict
+    ├── surfaceFeaturesDict
+    └── topoSetDict
 ```
 
