@@ -13,6 +13,7 @@ FoamFile
     object      turbulenceProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// simulated with LES, RANS and laminar also can be used in this case.
 
 //simulationType  laminar;
 
@@ -35,7 +36,6 @@ RAS
     printCoeffs     on;
 }
 */
-
 
 simulationType LES;
 

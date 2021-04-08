@@ -1,9 +1,19 @@
 This case is for Vortex-induced vibration around cylinder, using pimpleFoam in OpenFOAM.
 For weak FSI only.
+Test in Ubuntu 20.04 with OpenFOAM8.
 
 inlet    1 m/s
 D        1 m
 nu       0.002 m2/s
 Re       500
 
-If you want to run txy.py, make sure you have installed pandas numpy matplotlib.
+If you want to run txy.py, make sure you have installed pandas numpy matplotlib in your python.
+
+
+dynamicMeshDict:
+> sixDoFRigidBodyMotionConstraint
+  Motion Definitions see  https://openfoamwiki.net/index.php/Parameter_Definitions_-_dynamicMotionSolverFvMesh#Parameters_-_Motion_Definitions
+
+  MotionConstraint Options: axis line plane point orientation
+
+  > We using zAxis and zPlane achive fsi in xy direction.

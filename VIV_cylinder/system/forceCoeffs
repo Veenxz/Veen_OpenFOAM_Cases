@@ -26,7 +26,7 @@ forceCoeffs1
     pitchAxis       (0 0 1);
     magUInf         1;
     lRef            1;          // Wheelbase length
-    Aref            1;         // Estimated, Aref = D*L
+    Aref            1;          // Estimated, Aref = D*L
     /*
     binData
     {

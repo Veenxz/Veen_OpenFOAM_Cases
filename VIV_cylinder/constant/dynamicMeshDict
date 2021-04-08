@@ -13,6 +13,8 @@ FoamFile
     object      dynamicMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// using sixDoF lib 
+// solving by Newmark solver
 
 dynamicFvMesh   dynamicMotionSolverFvMesh;
 
@@ -22,11 +24,11 @@ motionSolver        sixDoFRigidBodyMotion;
 
 sixDoFRigidBodyMotionCoeffs
 {
-    report          on;
+    report          on;             // output object sixDoFRigidBodyState
     
-    patches         (cylinder);
-    innerDistance   2;      // Extent of the solid-body motion region around body
-    outerDistance   15;       // Extent of mesh-morphing region around body
+    patches         (cylinder);    // moving boundary
+    innerDistance   2;             // Extent of the solid-body motion region around body
+    outerDistance   15;            // Extent of mesh-morphing region around body
 
     // Gravity acceleration
     g               (0 0 -9.81);
@@ -51,9 +53,9 @@ sixDoFRigidBodyMotionCoeffs
     0 0 1
     );
 
-    accelerationRelaxation 0.9;
+    accelerationRelaxation 0.9;      // make solution easy to converge
     //accelerationDamping 1.0;
-    value           uniform (0 0 0);
+    value           uniform (0 0 0);  // initial velocity
 
     solver
     {

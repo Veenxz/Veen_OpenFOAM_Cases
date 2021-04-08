@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# clean case and gen mesh
 foamCleanTutorials
 
 blockMesh
 
 decomposePar
 
-mpirun -np 4 renumberMesh -overwrite                                     
+mpirun -np 4 renumberMesh -overwrite       
+
+# run solver
 mpirun -np 4 pimpleFoam -parallel | tee log.pimpleFoam
 
 # clean sixDoF data
